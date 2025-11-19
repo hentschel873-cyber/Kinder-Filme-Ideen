@@ -23,7 +23,7 @@ jobs:
       - name: Install dependencies (vue-app)
         working-directory: ./vue-app
         run: |
-          npm install
+          npm ci
 
       - name: Build (vue-app)
         working-directory: ./vue-app
@@ -34,3 +34,15 @@ jobs:
         working-directory: ./vue-app
         run: |
           if [ -f package.json ] && grep -q "typecheck" package.json; then npm run typecheck || true; else echo "no typecheck script"; fi
+
+      - name: Check dist exists
+        id: check-dist
+        run: |
+          if [ -d ./vue-app/dist ]; then echo "dist_exists=true" >> $GITHUB_OUTPUT; else echo "dist_exists=false" >> $GITHUB_OUTPUT; fi
+
+      - name: Upload dist artifact
+        if: steps.check-dist.outputs.dist_exists == 'true'
+        uses: actions/upload-artifact@v4
+        with:
+          name: vue-app-dist
+          path: ./vue-app/dist
