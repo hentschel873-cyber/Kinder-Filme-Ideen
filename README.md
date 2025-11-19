@@ -98,3 +98,8 @@ Wenn keine Lizenzdatei vorhanden ist, gilt standardmäßig kein öffentliches Nu
 ---
 
 Diese README ersetzt die Platzhalternotiz durch sinnvolle Anweisungen zum Setup, Testen und Beitragen.
+
+## Beispiele
+
+Siehe docs/EXAMPLES.md für Beispielskripte (Telegram‑Bot, Windows‑Service‑Installationsskript, CI).
+
