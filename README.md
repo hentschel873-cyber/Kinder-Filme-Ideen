@@ -1,5 +1,7 @@
 # Kinder-Filme-Ideen
 
+[![Node CI](https://github.com/hentschel873-cyber/Kinder-Filme-Ideen/actions/workflows/ci-node.yml/badge.svg)](https://github.com/hentschel873-cyber/Kinder-Filme-Ideen/actions/workflows/ci-node.yml)
+
 Kurzbeschreibung
 -----------------
 Dieses Repository enthält ein kleines statisches Frontend zum Sammeln und Verwalten von Ideen für Kinderfilme. Ziel ist ein einfacher Einstieg für Entwickler und Mitwirkende, um Ideen lokal zu testen und zu erweitern.
