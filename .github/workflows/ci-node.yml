@@ -28,12 +28,39 @@ jobs:
       - name: Build (vue-app)
         working-directory: ./vue-app
         run: |
-          npm run build --if-present
+          # Capture build output to a log file so we can upload it as an artifact for debugging
+          npm run build --if-present 2>&1 | tee build.log || true
 
       - name: Type check (optional)
         working-directory: ./vue-app
         run: |
-          if [ -f package.json ] && grep -q "typecheck" package.json; then npm run typecheck || true; else echo "no typecheck script"; fi
+          if [ -f package.json ] && grep -q "typecheck" package.json; then npm run typecheck 2>&1 | tee typecheck.log || true; else echo "no typecheck script"; fi
+
+      - name: Check build log exists
+        id: check-build-log
+        run: |
+          if [ -f ./vue-app/build.log ]; then echo "build_log_exists=true" >> $GITHUB_OUTPUT; else echo "build_log_exists=false" >> $GITHUB_OUTPUT; fi
+
+      - name: Upload build log
+        if: steps.check-build-log.outputs.build_log_exists == 'true'
+        uses: actions/upload-artifact@v4
+        with:
+          name: vue-app-build-log
+          path: ./vue-app/build.log
+          retention-days: 7
+
+      - name: Check typecheck log exists
+        id: check-typecheck-log
+        run: |
+          if [ -f ./vue-app/typecheck.log ]; then echo "typecheck_log_exists=true" >> $GITHUB_OUTPUT; else echo "typecheck_log_exists=false" >> $GITHUB_OUTPUT; fi
+
+      - name: Upload typecheck log
+        if: steps.check-typecheck-log.outputs.typecheck_log_exists == 'true'
+        uses: actions/upload-artifact@v4
+        with:
+          name: vue-app-typecheck-log
+          path: ./vue-app/typecheck.log
+          retention-days: 7
 
       - name: Check dist exists
         id: check-dist
